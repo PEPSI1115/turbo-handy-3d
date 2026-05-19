@@ -5,47 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>TURBO HANDY — 3D 모델 뷰어</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; background: #020617; color: #f1f5f9; font-family: system-ui, -apple-system, sans-serif; overflow: hidden; }
-    #app { display: flex; flex-direction: column; height: 100dvh; height: 100vh; }
-    #header { padding: 10px 16px 6px; background: #0f172a; border-bottom: 1px solid #1e293b; flex-shrink: 0; }
-    .title-row { display: flex; align-items: center; gap: 8px; }
-    h1 { font-size: 1.25rem; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .rev { font-size: 0.6rem; background: #1e293b; color: #94a3b8; padding: 2px 6px; border-radius: 4px; letter-spacing: .08em; font-weight: 700; }
-    .subtitle { color: #475569; font-size: .7rem; margin-top: 2px; }
-    #view-controls { display: flex; gap: 6px; padding: 7px 16px; background: #0a1628; border-bottom: 1px solid #1e293b; flex-shrink: 0; }
-    .vbtn { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: .78rem; font-weight: 600; transition: all .15s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-    .vbtn.active, .vbtn:hover { background: #1e3a8a; border-color: #60a5fa; color: #60a5fa; }
-    #main { flex: 1; display: grid; grid-template-columns: 1fr 300px; min-height: 0; }
-    #canvas-wrap { position: relative; overflow: hidden; }
-    canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
-    #hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); color: #334155; font-size: .66rem; white-space: nowrap; pointer-events: none; }
-    #sidebar { background: #070f1d; border-left: 1px solid #1e293b; overflow-y: auto; padding: 12px 10px; display: flex; flex-direction: column; gap: 14px; }
-    .sec-title { font-size: .6rem; font-weight: 700; letter-spacing: .14em; color: #475569; text-transform: uppercase; margin-bottom: 7px; }
-    #part-list { display: flex; flex-direction: column; gap: 3px; }
-    .pbtn { display: flex; align-items: center; gap: 8px; background: transparent; border: 1px solid #1e293b; color: #94a3b8; padding: 6px 10px; border-radius: 7px; cursor: pointer; text-align: left; font-size: .78rem; font-weight: 500; width: 100%; transition: all .12s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
-    .pbtn.active, .pbtn:hover { border-color: var(--c); color: #f1f5f9; background: #1e293b44; }
-    .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex-shrink: 0; }
-    #detail { display: none; background: #0f172a; border-radius: 10px; padding: 11px; border: 1px solid #1e293b; }
-    #detail.show { display: block; }
-    .dheader { display: flex; align-items: center; gap: 7px; border-left: 3px solid var(--dc); padding-left: 8px; margin-bottom: 8px; }
-    .ddot { width: 9px; height: 9px; border-radius: 50%; background: var(--dc); flex-shrink: 0; }
-    .dname { font-size: .88rem; font-weight: 700; color: #f1f5f9; }
-    .ddesc { font-size: .76rem; color: #94a3b8; line-height: 1.6; margin-bottom: 9px; }
-    .dspec { display: flex; gap: 6px; align-items: baseline; }
-    .slabel { font-size: .6rem; font-weight: 700; letter-spacing: .1em; color: #475569; text-transform: uppercase; flex-shrink: 0; }
-    .sval { font-size: .72rem; color: #60a5fa; font-family: monospace; }
-    #mode-table { display: flex; flex-direction: column; gap: 5px; }
-    .mrow { display: flex; align-items: flex-start; gap: 8px; background: #0f172a; border-radius: 7px; padding: 7px 9px; border: 1px solid #1e293b; }
-    .mtag { font-size: .57rem; font-weight: 800; letter-spacing: .05em; padding: 2px 5px; border-radius: 4px; border: 1px solid; flex-shrink: 0; margin-top: 1px; }
-    .mact { font-size: .74rem; color: #cbd5e1; font-weight: 600; }
-    .mtrig { font-size: .66rem; color: #475569; margin-top: 2px; }
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 2px; }
-    @media (max-width: 680px) {
-      #main { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
-      #canvas-wrap { min-height: 55vw; }
-      #sidebar { border-left: none; border-top: 1px solid #1e293b; max-height: 44vh; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:#050a12;color:#f1f5f9;font-family:system-ui,-apple-system,sans-serif;overflow:hidden;}
+    #app{display:flex;flex-direction:column;height:100dvh;height:100vh;}
+    #header{padding:10px 16px 6px;background:#0a1525;border-bottom:1px solid #1e293b;flex-shrink:0;}
+    .title-row{display:flex;align-items:center;gap:8px;}
+    h1{font-size:1.25rem;font-weight:800;background:linear-gradient(90deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .rev{font-size:.6rem;background:#1e293b;color:#94a3b8;padding:2px 6px;border-radius:4px;letter-spacing:.08em;font-weight:700;}
+    .subtitle{color:#475569;font-size:.7rem;margin-top:2px;}
+    #vc{display:flex;gap:6px;padding:7px 16px;background:#080f1e;border-bottom:1px solid #1e293b;flex-shrink:0;}
+    .vbtn{background:#1e293b;border:1px solid #334155;color:#94a3b8;padding:5px 14px;border-radius:6px;cursor:pointer;font-size:.78rem;font-weight:600;transition:all .15s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+    .vbtn.active,.vbtn:hover{background:#1e3a8a;border-color:#60a5fa;color:#60a5fa;}
+    #main{flex:1;display:grid;grid-template-columns:1fr 300px;min-height:0;}
+    #cw{position:relative;overflow:hidden;}
+    canvas{display:block;width:100%!important;height:100%!important;touch-action:none;}
+    #hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);color:#2a3a50;font-size:.66rem;white-space:nowrap;pointer-events:none;}
+    #sb{background:#060d1a;border-left:1px solid #1e293b;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:14px;}
+    .st{font-size:.6rem;font-weight:700;letter-spacing:.14em;color:#475569;text-transform:uppercase;margin-bottom:7px;}
+    #pl{display:flex;flex-direction:column;gap:3px;}
+    .pb{display:flex;align-items:center;gap:8px;background:transparent;border:1px solid #1e293b;color:#94a3b8;padding:6px 10px;border-radius:7px;cursor:pointer;text-align:left;font-size:.78rem;font-weight:500;width:100%;transition:all .12s;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+    .pb.active,.pb:hover{border-color:var(--c);color:#f1f5f9;background:#1e293b44;}
+    .pd{width:7px;height:7px;border-radius:50%;background:var(--c);flex-shrink:0;}
+    #det{display:none;background:#0a1525;border-radius:10px;padding:11px;border:1px solid #1e293b;}
+    #det.show{display:block;}
+    .dh{display:flex;align-items:center;gap:7px;border-left:3px solid var(--dc);padding-left:8px;margin-bottom:8px;}
+    .dd{width:9px;height:9px;border-radius:50%;background:var(--dc);flex-shrink:0;}
+    .dn{font-size:.88rem;font-weight:700;color:#f1f5f9;}
+    .ddesc{font-size:.76rem;color:#94a3b8;line-height:1.6;margin-bottom:9px;}
+    .ds{display:flex;gap:6px;align-items:baseline;}
+    .sl{font-size:.6rem;font-weight:700;letter-spacing:.1em;color:#475569;text-transform:uppercase;flex-shrink:0;}
+    .sv{font-size:.72rem;color:#60a5fa;font-family:monospace;}
+    #mt{display:flex;flex-direction:column;gap:5px;}
+    .mr{display:flex;align-items:flex-start;gap:8px;background:#0a1525;border-radius:7px;padding:7px 9px;border:1px solid #1e293b;}
+    .mtg{font-size:.57rem;font-weight:800;letter-spacing:.05em;padding:2px 5px;border-radius:4px;border:1px solid;flex-shrink:0;margin-top:1px;}
+    .ma{font-size:.74rem;color:#cbd5e1;font-weight:600;}
+    .mtr{font-size:.66rem;color:#475569;margin-top:2px;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:#1e293b;border-radius:2px;}
+    @media(max-width:680px){
+      #main{grid-template-columns:1fr;grid-template-rows:1fr auto;}
+      #cw{min-height:55vw;}
+      #sb{border-left:none;border-top:1px solid #1e293b;max-height:44vh;}
     }
   </style>
 </head>
@@ -55,519 +54,404 @@
     <div class="title-row"><h1>TURBO HANDY</h1><span class="rev">REV.03</span></div>
     <div class="subtitle">Sound-First 설계 &middot; 터보 stututu 손선풍기 &middot; 인터랙티브 3D 모델</div>
   </div>
-  <div id="view-controls">
+  <div id="vc">
     <button class="vbtn active" data-mode="exterior">외관</button>
     <button class="vbtn" data-mode="cross">단면</button>
     <button class="vbtn" data-mode="exploded">분해도</button>
   </div>
   <div id="main">
-    <div id="canvas-wrap">
-      <canvas id="c"></canvas>
-      <div id="hint">드래그: 회전 &nbsp;&middot;&nbsp; 핀치: 줌 &nbsp;&middot;&nbsp; 탭: 부품 정보</div>
-    </div>
-    <div id="sidebar">
-      <div><div class="sec-title">부품 목록</div><div id="part-list"></div></div>
-      <div id="detail">
-        <div class="dheader"><div class="ddot"></div><div class="dname"></div></div>
+    <div id="cw"><canvas id="c"></canvas><div id="hint">드래그: 회전 &nbsp;&middot;&nbsp; 핀치: 줌 &nbsp;&middot;&nbsp; 탭: 부품 정보</div></div>
+    <div id="sb">
+      <div><div class="st">부품 목록</div><div id="pl"></div></div>
+      <div id="det">
+        <div class="dh"><div class="dd"></div><div class="dn"></div></div>
         <div class="ddesc"></div>
-        <div class="dspec"><span class="slabel">사양</span><span class="sval"></span></div>
+        <div class="ds"><span class="sl">사양</span><span class="sv"></span></div>
       </div>
-      <div><div class="sec-title">모드 시스템</div><div id="mode-table"></div></div>
+      <div><div class="st">모드 시스템</div><div id="mt"></div></div>
     </div>
   </div>
 </div>
 
 <script type="importmap">
-{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// ── Data ──────────────────────────────────────────────────────────────────────
 const PARTS = [
-  { id:'impeller',  name:'임펠러 (BLDC)',        color:'#60a5fa', desc:'Φ40mm 8블레이드 BLDC 임펠러. 고속 회전으로 공기를 생성하고 ~2,400Hz BPF 휘슬 톤 발생. ESC를 통해 트리거 각도에 비례하여 PWM 제어.', spec:'A2212 2450KV · 최대 ~25,000RPM' },
-  { id:'chopper',   name:'Chopper 디스크 (N20)', color:'#f59e0b', desc:'N20 모터 3슬릿 디스크. 임펠러 뒤에서 공기를 15Hz로 끊어 "stututu" 리듬 생성. 슬릿 수 × RPM ÷ 60 = Hz.', spec:'N20 모터 · 3슬릿 · 300RPM → 15Hz' },
-  { id:'plenum',    name:'Plenum 챔버',           color:'#34d399', desc:'~30cm³ 밀폐 공간. Chopper가 공기를 막으면 압력 충전 → 열리면 폭발 방출. 매 펄스마다 버스트 텍스처 생성.', spec:'용량 ~30cm³' },
-  { id:'helmholtz', name:'헬름홀츠 공명 캐비티',   color:'#a78bfa', desc:'V=20cm³ 외벽 캐비티. BPF 톤(~2,400Hz)을 +10~15dB 증폭. PVC neck 길이로 공명 주파수 튜닝.', spec:'V=20cm³ · 증폭 +10~15dB' },
-  { id:'battery',   name:'배터리 (LiPo)',          color:'#f87171', desc:'7.4V 450mAh 2S LiPo. 그립 하단 내장. USB-C 충전 포트. IPX4 방수.', spec:'7.4V 450mAh 2S · JST · USB-C' },
-  { id:'mcu',       name:'MCU + ESC',             color:'#fb923c', desc:'ATtiny85(양산)/Arduino Nano(프로토). 트리거 → ESC PWM + Chopper PWM 동기 제어. Chopper 닫힘 시 임펠러 PWM 10~15% 낮춰 FM 변조.', spec:'ATtiny85 · 40A ESC' },
-  { id:'trigger',   name:'아날로그 트리거',          color:'#e879f9', desc:'PS5 L2 방식. 10kΩ 가변저항으로 눌림 깊이 → RPM. 잠금 버튼으로 트리거 고정 → 선풍기 모드.', spec:'10kΩ 가변저항 · 잠금 버튼' },
-  { id:'oled',      name:'OLED 디스플레이',         color:'#38bdf8', desc:'0.96" I2C OLED. RPM / Chopper Hz / 배터리 / 모드 표시. 설정 탭에서 Chopper Hz 조절.', spec:'0.96" · I2C · 128×64px' },
-  { id:'intake',    name:'흡기 콘 + 허니컴 그릴',    color:'#94a3b8', desc:'이중 안전 구조. 흡기 콘(1차) + 허니컴 그릴(2차). 바요넷 마운트 탈착.', spec:'바요넷 마운트 · IPX4' },
+  {id:'impeller', name:'임펠러 (BLDC)',        color:'#60a5fa', desc:'Φ40mm 8블레이드 BLDC 임펠러. 고속 회전으로 공기 생성 + ~2,400Hz BPF 휘슬 톤 발생. 트리거 각도에 비례해 ESC PWM 제어.', spec:'A2212 2450KV · ~25,000RPM'},
+  {id:'chopper',  name:'Chopper 디스크 (N20)', color:'#f59e0b', desc:'N20 모터 3슬릿 디스크. 임펠러 뒤에서 공기를 15Hz로 끊어 "stututu" 리듬 생성. 슬릿 수 × RPM ÷ 60 = Hz.', spec:'N20 · 3슬릿 · 300RPM → 15Hz'},
+  {id:'plenum',   name:'Plenum 챔버',           color:'#34d399', desc:'~30cm³ 밀폐 공간. Chopper가 막으면 압력 충전 → 열리면 폭발 방출. 매 펄스마다 버스트 텍스처 생성.', spec:'~30cm³'},
+  {id:'helmholtz',name:'헬름홀츠 공명 캐비티',   color:'#a78bfa', desc:'V=20cm³ 외벽 캐비티. BPF 톤(~2,400Hz)을 +10~15dB 증폭. PVC neck 길이로 주파수 튜닝.', spec:'V=20cm³ · +10~15dB'},
+  {id:'oled',     name:'OLED 디스플레이',        color:'#38bdf8', desc:'손잡이 전면(바람 방향)에 장착. RPM / Chopper Hz / 배터리 / 모드 표시. 설정 탭에서 Chopper Hz 조절.', spec:'0.96" · I2C · 128×64px'},
+  {id:'trigger',  name:'아날로그 트리거',          color:'#e879f9', desc:'손잡이 후면(디스플레이 반대편). 총잡듯 검지로 당김. 10kΩ 가변저항 → RPM 제어. 잠금 버튼으로 선풍기 모드.', spec:'10kΩ 가변저항 · 잠금 버튼'},
+  {id:'battery',  name:'배터리 (LiPo)',           color:'#f87171', desc:'손잡이 내부 하단. 7.4V 450mAh 2S LiPo. USB-C 충전. IPX4 방수.', spec:'7.4V 450mAh 2S · USB-C'},
+  {id:'mcu',      name:'MCU + ESC',              color:'#fb923c', desc:'손잡이 내부 상단. ATtiny85(양산)/Arduino Nano(프로토). 트리거 → ESC PWM + Chopper PWM 동기. Chopper 닫힘 시 FM 변조.', spec:'ATtiny85 · 40A ESC'},
+  {id:'intake',   name:'흡기 콘 + 허니컴 그릴',   color:'#94a3b8', desc:'이중 안전 구조. 흡기 콘(1차) + 허니컴 그릴(2차). 바요넷 마운트 탈착.', spec:'바요넷 마운트 · IPX4'},
 ];
-const MODES = [
-  { tag:'FAN MODE',  action:'Chopper OFF · 중간 RPM',        trigger:'트리거 + 잠금',     color:'#60a5fa' },
-  { tag:'SPOOL UP',  action:'RPM 서서히 상승 · BPF 휘슬',     trigger:'트리거 천천히',      color:'#34d399' },
-  { tag:'ANTI-LAG',  action:'고RPM + Chopper 15Hz + FM',     trigger:'Anti-Lag 버튼',     color:'#f59e0b' },
-  { tag:'BOV BURST', action:'단발 버스트 + RPM 급강하',        trigger:'트리거 급격히 해제', color:'#f87171' },
+const MODES=[
+  {tag:'FAN MODE', action:'Chopper OFF · 중간 RPM',        trigger:'트리거 + 잠금',      color:'#60a5fa'},
+  {tag:'SPOOL UP', action:'RPM 서서히 상승 · BPF 휘슬',     trigger:'트리거 천천히',       color:'#34d399'},
+  {tag:'ANTI-LAG', action:'고RPM + Chopper 15Hz + FM',     trigger:'Anti-Lag 버튼',      color:'#f59e0b'},
+  {tag:'BOV BURST',action:'단발 버스트 + RPM 급강하',        trigger:'트리거 급격히 해제',  color:'#f87171'},
 ];
 
-// UI
-const partListEl = document.getElementById('part-list');
-const detailEl   = document.getElementById('detail');
-PARTS.forEach(p => {
-  const b = document.createElement('button');
-  b.className='pbtn'; b.dataset.id=p.id; b.style.setProperty('--c',p.color);
-  b.innerHTML=`<span class="pdot"></span>${p.name}`;
-  b.addEventListener('click',()=>selectPart(p.id));
-  partListEl.appendChild(b);
+// ── UI ────────────────────────────────────────────────────────────────────────
+const plEl=document.getElementById('pl'), detEl=document.getElementById('det');
+PARTS.forEach(p=>{
+  const b=document.createElement('button');
+  b.className='pb';b.dataset.id=p.id;b.style.setProperty('--c',p.color);
+  b.innerHTML=`<span class="pd"></span>${p.name}`;
+  b.addEventListener('click',()=>pick(p.id));
+  plEl.appendChild(b);
 });
-document.getElementById('mode-table').innerHTML = MODES.map(m=>
-  `<div class="mrow"><span class="mtag" style="background:${m.color}22;color:${m.color};border-color:${m.color}55">${m.tag}</span><div><div class="mact">${m.action}</div><div class="mtrig">${m.trigger}</div></div></div>`
+document.getElementById('mt').innerHTML=MODES.map(m=>
+  `<div class="mr"><span class="mtg" style="background:${m.color}22;color:${m.color};border-color:${m.color}55">${m.tag}</span><div><div class="ma">${m.action}</div><div class="mtr">${m.trigger}</div></div></div>`
 ).join('');
 
-// Three.js
-const canvas = document.getElementById('c');
-const wrap   = document.getElementById('canvas-wrap');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+// ── Three.js ──────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('c'), wrap=document.getElementById('cw');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setClearColor(0x020617);
-renderer.shadowMap.enabled = true;
-renderer.localClippingEnabled = true;
+renderer.setClearColor(0x050a12);
+renderer.shadowMap.enabled=true;
+renderer.localClippingEnabled=true;
 
-const scene  = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-camera.position.set(2.2, 1.8, 3.8);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(42,1,.1,100);
+camera.position.set(1.9,1.1,3.6);
 
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, -0.15, 0);
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.minDistance = 2;
-controls.maxDistance = 10;
-controls.update();
+const ctrl=new OrbitControls(camera,renderer.domElement);
+ctrl.target.set(0,-.3,0);ctrl.enableDamping=true;ctrl.dampingFactor=.08;
+ctrl.minDistance=2;ctrl.maxDistance=10;ctrl.update();
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-const sun = new THREE.DirectionalLight(0xffffff, 1.4);
-sun.position.set(4, 6, 5); sun.castShadow = true; scene.add(sun);
-const fill = new THREE.DirectionalLight(0x4488ff, 0.35); fill.position.set(-4,-3,-4); scene.add(fill);
-const rim  = new THREE.PointLight(0x60a5fa, 0.7, 8); rim.position.set(-1, 2, 2); scene.add(rim);
+// Lights — brighter to make housing pop against background
+scene.add(new THREE.AmbientLight(0xffffff,.55));
+const sun=new THREE.DirectionalLight(0xffffff,1.5);sun.position.set(4,6,5);sun.castShadow=true;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x6699ff,.4);fill.position.set(-4,-2,-4);scene.add(fill);
+const rim=new THREE.PointLight(0xa0c8ff,.8,10);rim.position.set(-1.5,2,2);scene.add(rim);
+const front=new THREE.PointLight(0xffeedd,.5,8);front.position.set(.5,.5,4);scene.add(front); // front fill
 
 // State
-let selectedId = null, viewMode = 'exterior';
-const clipPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0.05); // horizontal cut, show bottom half
+let selId=null,mode='exterior';
+const clip=new THREE.Plane(new THREE.Vector3(0,1,0),.05); // show lower half (grip side)
 
 // Registry
-const registry = {};
-function reg(id, group, meshes, exVec) {
-  registry[id] = { group, meshes, exVec };
-  scene.add(group);
-}
+const reg={};
+function add(id,g,meshes,ev){reg[id]={g,meshes,ev};scene.add(g);}
 
-// Material helper
-function mat(hex, o={}) {
+// Mat helper
+function m(hex,o={}){
   return new THREE.MeshStandardMaterial({
-    color: new THREE.Color(hex),
-    metalness: o.m ?? 0.5,
-    roughness: o.r ?? 0.4,
-    transparent: !!o.op,
-    opacity: o.op ?? 1,
-    side: o.side ?? THREE.FrontSide,
-    wireframe: !!o.wire,
+    color:new THREE.Color(hex),metalness:o.m??0.5,roughness:o.r??0.38,
+    transparent:!!o.op,opacity:o.op??1,side:o.side??THREE.FrontSide,wireframe:!!o.wire
   });
 }
 
-// ── STATIC HOUSING ──────────────────────────────────────────────────────────
+// ── STATIC HOUSING ───────────────────────────────────────────────────────────
 {
-  const g = new THREE.Group();
+  const g=new THREE.Group();
 
-  // Main round disc body (turbo housing, faces +Z toward viewer)
-  const disc = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.72, 0.72, 0.46, 56),
-    mat('#1c2d42', { m:0.68, r:0.22 })
+  // Main turbo disc — aluminum color for contrast
+  const disc=new THREE.Mesh(
+    new THREE.CylinderGeometry(.76,.76,.44,56),
+    m('#7a8e9e',{m:.72,r:.18}) // aluminum gray — stands out from dark bg
   );
-  disc.rotation.x = Math.PI / 2;
+  disc.rotation.x=Math.PI/2;
   g.add(disc);
 
-  // Scroll volute — partial torus (~310°) wrapping around the disc
-  const volute = new THREE.Mesh(
-    new THREE.TorusGeometry(0.80, 0.22, 16, 60, Math.PI * 1.72),
-    mat('#0e1c2c', { m:0.65, r:0.25 })
+  // Scroll volute (partial torus ~300°)
+  const vol=new THREE.Mesh(
+    new THREE.TorusGeometry(.84,.21,16,60,Math.PI*1.66),
+    m('#56707e',{m:.68,r:.22})
   );
-  // Rotate so the gap (outlet tongue) sits at ~1 o'clock
-  volute.rotation.z = Math.PI * 0.48;
-  g.add(volute);
+  vol.rotation.z=Math.PI*.5;
+  g.add(vol);
 
-  // Scroll body fill (thicker outer ring behind volute to look solid)
-  const scrollFill = new THREE.Mesh(
-    new THREE.TorusGeometry(0.80, 0.14, 10, 60),
-    mat('#152030', { m:0.6, r:0.3 })
+  // Volute back fill ring (makes scroll look solid from side)
+  const vfill=new THREE.Mesh(
+    new THREE.TorusGeometry(.84,.13,10,60,Math.PI*1.66),
+    m('#445e6a',{m:.65,r:.28})
   );
-  scrollFill.rotation.z = 0;
-  g.add(scrollFill);
+  vfill.rotation.z=Math.PI*.5;
+  vfill.position.z=-.06;
+  g.add(vfill);
 
-  // Discharge / outlet pipe — tangential exit at upper-right
-  const pipe = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.195, 0.195, 0.65, 18),
-    mat('#0c1a28', { m:0.65, r:0.28 })
+  // Discharge pipe — upper right, tangential exit
+  const pipe=new THREE.Mesh(
+    new THREE.CylinderGeometry(.195,.195,.62,18),
+    m('#3a5565',{m:.68,r:.24})
   );
-  pipe.position.set(0.68, 0.85, 0);
-  pipe.rotation.z = Math.PI / 2;
+  pipe.position.set(.72,.88,0);pipe.rotation.z=Math.PI/2;
   g.add(pipe);
-  // Pipe flange rings
-  [-0.28, 0.28].forEach(ox => {
-    const fl = new THREE.Mesh(
-      new THREE.TorusGeometry(0.21, 0.03, 8, 20),
-      mat('#0a1520', { m:0.6, r:0.35 })
-    );
-    fl.position.set(0.68 + ox, 0.85, 0);
-    fl.rotation.y = Math.PI / 2;
-    g.add(fl);
+  // Pipe flanges
+  [-.27,.27].forEach(ox=>{
+    const fl=new THREE.Mesh(new THREE.TorusGeometry(.215,.028,8,20),m('#2a4555',{m:.65,r:.3}));
+    fl.position.set(.72+ox,.88,0);fl.rotation.y=Math.PI/2;g.add(fl);
   });
 
-  // Front face outer ring
-  const fr1 = new THREE.Mesh(
-    new THREE.TorusGeometry(0.64, 0.06, 14, 56),
-    mat('#243d5c', { m:0.75, r:0.15 })
-  );
-  fr1.position.z = 0.24; g.add(fr1);
+  // Front face rings
+  const fr1=new THREE.Mesh(new THREE.TorusGeometry(.66,.058,14,56),m('#8ea6b8',{m:.76,r:.14}));
+  fr1.position.z=.23;g.add(fr1);
+  const fr2=new THREE.Mesh(new THREE.TorusGeometry(.45,.038,10,40),m('#6a8898',{m:.72,r:.18}));
+  fr2.position.z=.225;g.add(fr2);
 
-  // Front face inner ring
-  const fr2 = new THREE.Mesh(
-    new THREE.TorusGeometry(0.44, 0.038, 10, 40),
-    mat('#1a2e46', { m:0.7, r:0.2 })
-  );
-  fr2.position.z = 0.235; g.add(fr2);
+  // Nose cone (bearing hub)
+  const nose=new THREE.Mesh(new THREE.ConeGeometry(.1,.2,20),m('#2e4455',{m:.78,r:.16}));
+  nose.rotation.x=-Math.PI/2;nose.position.z=.29;g.add(nose);
 
-  // Center nose cone (bearing housing boss, front)
-  const nose = new THREE.Mesh(
-    new THREE.ConeGeometry(0.10, 0.18, 20),
-    mat('#131e2e', { m:0.75, r:0.18 })
-  );
-  nose.rotation.x = -Math.PI / 2;
-  nose.position.z = 0.28; g.add(nose);
+  // Back cover
+  const back=new THREE.Mesh(new THREE.CylinderGeometry(.76,.76,.05,56),m('#566878',{m:.62,r:.28}));
+  back.rotation.x=Math.PI/2;back.position.z=-.255;g.add(back);
+  const stud=new THREE.Mesh(new THREE.CylinderGeometry(.09,.12,.11,14),m('#1e3040',{m:.75,r:.18}));
+  stud.rotation.x=Math.PI/2;stud.position.z=-.32;g.add(stud);
 
-  // Back cover disc
-  const back = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.72, 0.72, 0.05, 56),
-    mat('#111e2e', { m:0.6, r:0.3 })
-  );
-  back.rotation.x = Math.PI / 2;
-  back.position.z = -0.255; g.add(back);
-
-  // Back center stud
-  const stud = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.09, 0.12, 0.12, 14),
-    mat('#0a1420', { m:0.72, r:0.2 })
-  );
-  stud.rotation.x = Math.PI / 2;
-  stud.position.z = -0.32; g.add(stud);
-
-  // Grip (handle, hangs down)
-  const grip = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.235, 0.19, 1.08, 26),
-    mat('#0b1520', { m:0.38, r:0.72 })
-  );
-  grip.position.set(-0.05, -0.9, -0.02);
-  grip.rotation.z = 0.11; g.add(grip);
-
-  // Grip texture ridges
-  for (let i = 0; i < 5; i++) {
-    const ridge = new THREE.Mesh(
-      new THREE.TorusGeometry(0.215, 0.015, 6, 22),
-      mat('#080f1a', { m:0.35, r:0.8 })
-    );
-    ridge.position.set(-0.05 - Math.sin(0.11)*(i-2)*0.12, -0.62 + (i-2)*0.14 - 0.28, -0.02);
-    ridge.rotation.z = 0.11; g.add(ridge);
+  // 6 mounting bolts
+  for(let i=0;i<6;i++){
+    const a=(i/6)*Math.PI*2+Math.PI/6;
+    const bolt=new THREE.Mesh(new THREE.CylinderGeometry(.024,.024,.055,8),m('#1a2e3e',{m:.82,r:.14}));
+    bolt.rotation.x=Math.PI/2;bolt.position.set(Math.cos(a)*.68,Math.sin(a)*.68,.265);g.add(bolt);
   }
 
-  // Grip-to-housing connector bracket
-  const conn = new THREE.Mesh(
-    new THREE.BoxGeometry(0.52, 0.36, 0.44),
-    mat('#1a2d42', { m:0.55, r:0.4 })
+  // ── GRIP — shorter, thinner, proportional to turbo head ──
+  // Turbo head radius ~0.76; grip should feel like 1/3 of that
+  const grip=new THREE.Mesh(
+    new THREE.CylinderGeometry(.20,.165,.88,26),
+    m('#1a2530',{m:.35,r:.75})
   );
-  conn.position.set(-0.04, -0.38, 0); g.add(conn);
+  grip.position.set(-.04,-.80,-.02);grip.rotation.z=.1;
+  g.add(grip);
 
-  // Anti-lag button (amber, on housing body side)
-  const al = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,0.1,12), mat('#f59e0b',{m:.5,r:.3}));
-  al.position.set(0.42, 0.08, 0.4); g.add(al);
-
-  // Lock button (gray, on grip front)
-  const lk = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,0.1,12), mat('#475569',{m:.5,r:.4}));
-  lk.rotation.x = Math.PI/2;
-  lk.position.set(-0.05, -0.55, 0.26); g.add(lk);
-
-  // Mounting bolts (cosmetic, around housing)
-  for (let i = 0; i < 6; i++) {
-    const ang = (i/6)*Math.PI*2 + Math.PI/6;
-    const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.06,8), mat('#0a1420',{m:.8,r:.15}));
-    bolt.rotation.x = Math.PI/2;
-    bolt.position.set(Math.cos(ang)*0.65, Math.sin(ang)*0.65, 0.26); g.add(bolt);
+  // Grip ridges (3 subtle ones)
+  for(let i=0;i<3;i++){
+    const ridge=new THREE.Mesh(new THREE.TorusGeometry(.185,.012,6,22),m('#101c28',{m:.3,r:.8}));
+    ridge.position.set(-.04,-.65+(i-.5)*.18,-.02);ridge.rotation.z=.1;g.add(ridge);
   }
+
+  // Grip-housing connector (shorter bracket)
+  const conn=new THREE.Mesh(new THREE.BoxGeometry(.50,.30,.42),m('#2a4255',{m:.58,r:.36}));
+  conn.position.set(-.02,-.34,0);g.add(conn);
+
+  // Anti-lag button (amber, on housing side)
+  const al=new THREE.Mesh(new THREE.CylinderGeometry(.052,.052,.09,12),m('#f59e0b',{m:.5,r:.3}));
+  al.position.set(.42,.06,.4);g.add(al);
+
+  // Lock button (on connector top, front)
+  const lk=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.09,12),m('#64748b',{m:.5,r:.4}));
+  lk.rotation.x=Math.PI/2;lk.position.set(-.02,-.2,.24);g.add(lk);
 
   scene.add(g);
 }
 
-// ── INTAKE GRILL (front face, at z=0.28+) ────────────────────────────────
+// ── INTAKE GRILL (front face) ─────────────────────────────────────────────────
 {
-  const g = new THREE.Group();
-  const c = '#94a3b8';
-
-  // Honeycomb grill face
-  const grill = new THREE.Mesh(new THREE.CircleGeometry(0.42, 6), mat(c,{wire:true,m:.4}));
-  grill.position.z = 0.32; g.add(grill);
-
-  // Outer grill ring
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.43,0.045,12,40), mat(c,{m:.65,r:.25}));
-  ring.position.z = 0.32; g.add(ring);
-
-  // Short intake cone (flared)
-  const cone = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.44, 0.38, 0.14, 32, 1, true),
-    mat(c, { op:0.55, side:THREE.DoubleSide })
-  );
-  cone.rotation.x = Math.PI/2;
-  cone.position.z = 0.38; g.add(cone);
-
-  reg('intake', g, [grill, ring, cone], new THREE.Vector3(0, 0, 1.8));
+  const g=new THREE.Group();
+  const c='#94a3b8';
+  const grill=new THREE.Mesh(new THREE.CircleGeometry(.44,6),m(c,{wire:true,m:.4}));
+  grill.position.z=.32;g.add(grill);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.44,.042,12,40),m(c,{m:.66,r:.22}));
+  ring.position.z=.32;g.add(ring);
+  const cone=new THREE.Mesh(new THREE.CylinderGeometry(.45,.38,.14,32,1,true),m(c,{op:.5,side:THREE.DoubleSide}));
+  cone.rotation.x=Math.PI/2;cone.position.z=.38;g.add(cone);
+  add('intake',g,[grill,ring,cone],new THREE.Vector3(0,0,1.9));
 }
 
-// ── IMPELLER (compressor wheel, visible from front, spins Z) ─────────────
+// ── IMPELLER (spins around Z) ─────────────────────────────────────────────────
 let impSpin;
 {
-  const wrapper = new THREE.Group();
-  impSpin = new THREE.Group();
-  impSpin.position.z = 0.16;
-  wrapper.add(impSpin);
+  const wrap2=new THREE.Group();
+  impSpin=new THREE.Group();impSpin.position.z=.15;wrap2.add(impSpin);
+  const c='#60a5fa', ms=[];
 
-  const c = '#60a5fa';
-  const meshes = [];
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(.41,.41,.022,40),m(c,{m:.84,r:.14}));
+  base.rotation.x=Math.PI/2;impSpin.add(base);ms.push(base);
 
-  // Splitter disc (base platform)
-  const baseDisc = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.40, 0.40, 0.025, 40),
-    mat(c, { m:.82, r:.16 })
-  );
-  baseDisc.rotation.x = Math.PI/2;
-  impSpin.add(baseDisc); meshes.push(baseDisc);
+  const hub=new THREE.Mesh(new THREE.ConeGeometry(.096,.22,18),m(c,{m:.88,r:.12}));
+  hub.rotation.x=-Math.PI/2;hub.position.z=.1;impSpin.add(hub);ms.push(hub);
 
-  // Hub cone (tapers forward)
-  const hubCone = new THREE.Mesh(
-    new THREE.ConeGeometry(0.095, 0.22, 18),
-    mat(c, { m:.88, r:.12 })
-  );
-  hubCone.rotation.x = -Math.PI/2;
-  hubCone.position.z = 0.1;
-  impSpin.add(hubCone); meshes.push(hubCone);
-
-  // 8 main blades — radial in XY plane
-  for (let i = 0; i < 8; i++) {
-    const ang = (i/8)*Math.PI*2;
-    const blade = new THREE.Mesh(
-      new THREE.BoxGeometry(0.038, 0.28, 0.13),
-      mat(c, { m:.78, r:.18, op:.92 })
-    );
-    blade.rotation.z = ang;
-    blade.position.set(Math.cos(ang)*0.21, Math.sin(ang)*0.21, 0.04);
-    impSpin.add(blade); meshes.push(blade);
+  for(let i=0;i<8;i++){
+    const a=(i/8)*Math.PI*2;
+    const bl=new THREE.Mesh(new THREE.BoxGeometry(.036,.30,.12),m(c,{m:.78,r:.18,op:.92}));
+    bl.rotation.z=a;bl.position.set(Math.cos(a)*.21,Math.sin(a)*.21,.04);
+    impSpin.add(bl);ms.push(bl);
   }
-
-  // 8 splitter blades (shorter, offset angle)
-  for (let i = 0; i < 8; i++) {
-    const ang = (i/8)*Math.PI*2 + Math.PI/8;
-    const blade = new THREE.Mesh(
-      new THREE.BoxGeometry(0.028, 0.16, 0.10),
-      mat('#4a8ed8', { m:.74, r:.2, op:.85 })
-    );
-    blade.rotation.z = ang;
-    blade.position.set(Math.cos(ang)*0.30, Math.sin(ang)*0.30, 0.03);
-    impSpin.add(blade); meshes.push(blade);
+  for(let i=0;i<8;i++){
+    const a=(i/8)*Math.PI*2+Math.PI/8;
+    const bl=new THREE.Mesh(new THREE.BoxGeometry(.026,.17,.09),m('#4a90d0',{m:.75,r:.2,op:.85}));
+    bl.rotation.z=a;bl.position.set(Math.cos(a)*.30,Math.sin(a)*.30,.03);
+    impSpin.add(bl);ms.push(bl);
   }
-
-  reg('impeller', wrapper, meshes, new THREE.Vector3(0, 0, 1.4));
+  add('impeller',wrap2,ms,new THREE.Vector3(0,0,1.5));
 }
 
-// ── CHOPPER DISK ─────────────────────────────────────────────────────────
+// ── CHOPPER DISK ──────────────────────────────────────────────────────────────
 let chopSpin;
 {
-  const wrapper = new THREE.Group();
-  chopSpin = new THREE.Group();
-  wrapper.add(chopSpin);
-
-  const c = '#f59e0b';
-  const meshes = [];
-
-  // Disk perpendicular to Z, positioned behind impeller inside housing
-  const disk = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.36, 0.36, 0.05, 36),
-    mat(c, { m:.52, r:.3 })
-  );
-  disk.rotation.x = Math.PI/2;
-  disk.position.z = 0.0;
-  chopSpin.add(disk); meshes.push(disk);
-
-  // 3 slits
-  for (let i=0;i<3;i++) {
-    const ang=(i/3)*Math.PI*2;
-    const slit = new THREE.Mesh(new THREE.BoxGeometry(0.14,0.15,0.07), mat('#020617',{m:.1,r:.9}));
-    slit.position.set(Math.cos(ang)*0.20, Math.sin(ang)*0.20, 0);
-    chopSpin.add(slit);
+  const wrap2=new THREE.Group();
+  chopSpin=new THREE.Group();wrap2.add(chopSpin);
+  const c='#f59e0b', ms=[];
+  const disk=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.05,36),m(c,{m:.52,r:.3}));
+  disk.rotation.x=Math.PI/2;chopSpin.add(disk);ms.push(disk);
+  for(let i=0;i<3;i++){
+    const a=(i/3)*Math.PI*2;
+    const sl=new THREE.Mesh(new THREE.BoxGeometry(.14,.14,.07),m('#020617',{m:.1,r:.9}));
+    sl.position.set(Math.cos(a)*.2,Math.sin(a)*.2,0);chopSpin.add(sl);
   }
-
-  // N20 motor body (below disk)
-  const n20 = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,0.36,12), mat(c,{m:.6,r:.3}));
-  n20.position.set(0, -0.3, 0);
-  chopSpin.add(n20); meshes.push(n20);
-
-  reg('chopper', wrapper, meshes, new THREE.Vector3(0, 0, 0.7));
+  const n20=new THREE.Mesh(new THREE.CylinderGeometry(.055,.055,.32,12),m(c,{m:.6,r:.3}));
+  n20.position.set(0,-.28,0);chopSpin.add(n20);ms.push(n20);
+  add('chopper',wrap2,ms,new THREE.Vector3(0,0,.8));
 }
 
-// ── PLENUM CHAMBER ────────────────────────────────────────────────────────
+// ── PLENUM CHAMBER ────────────────────────────────────────────────────────────
 {
-  const g = new THREE.Group();
-  const m1 = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.52, 0.52, 0.32, 36),
-    mat('#34d399', { m:.22, r:.6, op:.35, side:THREE.DoubleSide })
-  );
-  m1.rotation.x = Math.PI/2;
-  m1.position.z = -0.1;
-  g.add(m1);
-  reg('plenum', g, [m1], new THREE.Vector3(0, 0, -1.4));
+  const g=new THREE.Group();
+  const mm=new THREE.Mesh(new THREE.CylinderGeometry(.52,.52,.30,36),m('#34d399',{m:.22,r:.6,op:.32,side:THREE.DoubleSide}));
+  mm.rotation.x=Math.PI/2;mm.position.z=-.1;g.add(mm);
+  add('plenum',g,[mm],new THREE.Vector3(0,0,-1.5));
 }
 
-// ── HELMHOLTZ CAVITY ──────────────────────────────────────────────────────
+// ── HELMHOLTZ CAVITY (outer housing wall) ────────────────────────────────────
 {
-  const g = new THREE.Group();
-  const c = '#a78bfa';
-  const box = new THREE.Mesh(new THREE.BoxGeometry(0.24,0.42,0.22), mat(c,{op:.78}));
-  box.position.set(0.85, 0.12, 0); g.add(box);
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.038,0.038,0.12,10), mat(c));
-  neck.rotation.z = Math.PI/2;
-  neck.position.set(0.72, 0.12, 0); g.add(neck);
-  reg('helmholtz', g, [box, neck], new THREE.Vector3(1.6, 0.2, 0));
+  const g=new THREE.Group();
+  const c='#a78bfa';
+  const box=new THREE.Mesh(new THREE.BoxGeometry(.22,.40,.2),m(c,{op:.78}));
+  box.position.set(.88,.1,0);g.add(box);
+  const neck=new THREE.Mesh(new THREE.CylinderGeometry(.034,.034,.1,10),m(c));
+  neck.rotation.z=Math.PI/2;neck.position.set(.74,.1,0);g.add(neck);
+  add('helmholtz',g,[box,neck],new THREE.Vector3(1.7,.2,0));
 }
 
-// ── BATTERY ───────────────────────────────────────────────────────────────
+// ── OLED — 손잡이 전면(바람 방향, +Z 쪽) ────────────────────────────────────
+let scrMat;
 {
-  const g = new THREE.Group();
-  const batt = new THREE.Mesh(new THREE.BoxGeometry(0.32,0.22,0.28), mat('#f87171'));
-  batt.position.set(-0.05, -0.78, 0); g.add(batt);
-  const usb = new THREE.Mesh(new THREE.BoxGeometry(0.04,0.07,0.13), mat('#475569',{m:.8,r:.2}));
-  usb.position.set(-0.05, -0.9, 0); g.add(usb);
-  reg('battery', g, [batt], new THREE.Vector3(0, -1.6, 0));
+  const g=new THREE.Group();
+  const bezel=new THREE.Mesh(new THREE.BoxGeometry(.28,.13,.022),m('#050d1a',{m:.56,r:.28}));
+  bezel.position.set(-.02,-.28,.238);g.add(bezel); // 커넥터 전면
+  scrMat=new THREE.MeshStandardMaterial({color:new THREE.Color('#38bdf8'),emissive:new THREE.Color('#38bdf8'),emissiveIntensity:.7});
+  const scr=new THREE.Mesh(new THREE.BoxGeometry(.24,.10,.018),scrMat);
+  scr.position.set(-.02,-.28,.248);g.add(scr);
+  add('oled',g,[bezel,scr],new THREE.Vector3(0,.3,1.6));
 }
 
-// ── MCU + ESC ─────────────────────────────────────────────────────────────
+// ── TRIGGER — 손잡이 후면(디스플레이 반대편, -Z 쪽) ─────────────────────────
 {
-  const g = new THREE.Group();
-  const pcb = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.06,0.24), mat('#1a6b3c',{m:.2,r:.75}));
-  pcb.position.set(-0.05, -0.57, 0); g.add(pcb);
-  const chip = new THREE.Mesh(new THREE.BoxGeometry(0.09,0.04,0.09), mat('#fb923c',{m:.4,r:.5}));
-  chip.position.set(-0.05, -0.54, 0.06); g.add(chip);
-  reg('mcu', g, [pcb, chip], new THREE.Vector3(0.5, -1.2, 0.8));
+  const g=new THREE.Group();
+  // 가드
+  const guard=new THREE.Mesh(new THREE.BoxGeometry(.22,.1,.04),m('#c026d3',{m:.4,r:.5}));
+  guard.position.set(-.02,-.42,-.22);g.add(guard);
+  // 트리거 레버
+  const trig=new THREE.Mesh(new THREE.BoxGeometry(.18,.38,.10),m('#e879f9',{m:.3,r:.6}));
+  trig.position.set(-.02,-.60,-.22);trig.rotation.x=-.32;g.add(trig);
+  add('trigger',g,[guard,trig],new THREE.Vector3(.2,-.3,-1.7));
 }
 
-// ── TRIGGER ───────────────────────────────────────────────────────────────
+// ── BATTERY — 손잡이 내부 하단 ───────────────────────────────────────────────
 {
-  const g = new THREE.Group();
-  const trig = new THREE.Mesh(new THREE.BoxGeometry(0.26,0.50,0.12), mat('#e879f9',{m:.3,r:.6}));
-  trig.position.set(-0.02, -0.64, 0.24);
-  trig.rotation.x = 0.32; g.add(trig);
-  reg('trigger', g, [trig], new THREE.Vector3(0.2, -0.4, 1.6));
+  const g=new THREE.Group();
+  const batt=new THREE.Mesh(new THREE.BoxGeometry(.26,.30,.22),m('#f87171'));
+  batt.position.set(-.04,-.80,0);g.add(batt);
+  const usb=new THREE.Mesh(new THREE.BoxGeometry(.04,.065,.12),m('#475569',{m:.8,r:.2}));
+  usb.position.set(-.04,-.97,0);g.add(usb);
+  add('battery',g,[batt],new THREE.Vector3(0,-1.7,0));
 }
 
-// ── OLED ──────────────────────────────────────────────────────────────────
-let screenMat;
+// ── MCU + ESC — 손잡이 내부 상단 ─────────────────────────────────────────────
 {
-  const g = new THREE.Group();
-  const bezel = new THREE.Mesh(new THREE.BoxGeometry(0.36,0.06,0.22), mat('#050d1a',{m:.55,r:.3}));
-  bezel.position.set(0.08, 0.8, 0.12);
-  bezel.rotation.x = -0.28; g.add(bezel);
-  screenMat = new THREE.MeshStandardMaterial({ color:new THREE.Color('#38bdf8'), emissive:new THREE.Color('#38bdf8'), emissiveIntensity:.7 });
-  const scr = new THREE.Mesh(new THREE.BoxGeometry(0.31,0.026,0.18), screenMat);
-  scr.position.set(0.08, 0.82, 0.13);
-  scr.rotation.x = -0.28; g.add(scr);
-  reg('oled', g, [bezel, scr], new THREE.Vector3(0, 1.6, 0.5));
+  const g=new THREE.Group();
+  const pcb=new THREE.Mesh(new THREE.BoxGeometry(.24,.13,.20),m('#1a6b3c',{m:.2,r:.75}));
+  pcb.position.set(-.02,-.52,0);g.add(pcb);
+  const chip=new THREE.Mesh(new THREE.BoxGeometry(.09,.04,.09),m('#fb923c',{m:.4,r:.5}));
+  chip.position.set(-.02,-.49,.06);g.add(chip);
+  add('mcu',g,[pcb,chip],new THREE.Vector3(.5,-1.1,.6));
 }
 
-// ── RAYCASTER ─────────────────────────────────────────────────────────────
-const raycaster = new THREE.Raycaster();
-const ndc = new THREE.Vector2();
-let pdPos = null;
-canvas.addEventListener('pointerdown', e => { pdPos={x:e.clientX,y:e.clientY}; });
-canvas.addEventListener('pointerup', e => {
-  if (!pdPos) return;
-  if (Math.hypot(e.clientX-pdPos.x, e.clientY-pdPos.y) < 8) {
-    const r = canvas.getBoundingClientRect();
-    ndc.set(((e.clientX-r.left)/r.width)*2-1, -((e.clientY-r.top)/r.height)*2+1);
-    raycaster.setFromCamera(ndc, camera);
-    const hits = raycaster.intersectObjects(Object.values(registry).flatMap(x=>x.meshes));
-    if (hits.length) {
-      const uuid = hits[0].object.uuid;
-      const found = PARTS.find(p => registry[p.id]?.meshes.some(m=>m.uuid===uuid));
-      if (found) selectPart(found.id);
+// ── Raycaster ────────────────────────────────────────────────────────────────
+const ray=new THREE.Raycaster(), ndc=new THREE.Vector2();
+let pd=null;
+canvas.addEventListener('pointerdown',e=>{pd={x:e.clientX,y:e.clientY};});
+canvas.addEventListener('pointerup',e=>{
+  if(!pd)return;
+  if(Math.hypot(e.clientX-pd.x,e.clientY-pd.y)<8){
+    const r=canvas.getBoundingClientRect();
+    ndc.set(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1);
+    ray.setFromCamera(ndc,camera);
+    const hits=ray.intersectObjects(Object.values(reg).flatMap(x=>x.meshes));
+    if(hits.length){
+      const uuid=hits[0].object.uuid;
+      const found=PARTS.find(p=>reg[p.id]?.meshes.some(mm=>mm.uuid===uuid));
+      if(found)pick(found.id);
     }
   }
-  pdPos = null;
+  pd=null;
 });
 
-// ── SELECTION ─────────────────────────────────────────────────────────────
-function selectPart(id) {
-  selectedId = selectedId===id ? null : id;
-  document.querySelectorAll('.pbtn').forEach(b=>b.classList.toggle('active',b.dataset.id===selectedId));
-  if (selectedId) {
-    const p = PARTS.find(x=>x.id===selectedId);
-    detailEl.style.setProperty('--dc',p.color);
-    detailEl.classList.add('show');
-    detailEl.querySelector('.ddot').style.background=p.color;
-    detailEl.querySelector('.dname').textContent=p.name;
-    detailEl.querySelector('.ddesc').textContent=p.desc;
-    detailEl.querySelector('.sval').textContent=p.spec;
-    detailEl.scrollIntoView({behavior:'smooth',block:'nearest'});
-  } else { detailEl.classList.remove('show'); }
-  PARTS.forEach(p => {
-    const e = registry[p.id]; if (!e) return;
-    const dim = selectedId && selectedId!==p.id;
-    e.meshes.forEach(m => {
-      if (m.material.wireframe) return;
-      m.material.color.set(dim?'#1a2540':p.color);
-      if (m.material.emissive) m.material.emissiveIntensity = dim?0:(selectedId===p.id?1.5:.7);
+// ── Selection ────────────────────────────────────────────────────────────────
+function pick(id){
+  selId=selId===id?null:id;
+  document.querySelectorAll('.pb').forEach(b=>b.classList.toggle('active',b.dataset.id===selId));
+  if(selId){
+    const p=PARTS.find(x=>x.id===selId);
+    detEl.style.setProperty('--dc',p.color);detEl.classList.add('show');
+    detEl.querySelector('.dd').style.background=p.color;
+    detEl.querySelector('.dn').textContent=p.name;
+    detEl.querySelector('.ddesc').textContent=p.desc;
+    detEl.querySelector('.sv').textContent=p.spec;
+    detEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }else{detEl.classList.remove('show');}
+  PARTS.forEach(p=>{
+    const e=reg[p.id];if(!e)return;
+    const dim=selId&&selId!==p.id;
+    e.meshes.forEach(mm=>{
+      if(mm.material.wireframe)return;
+      mm.material.color.set(dim?'#1a2a3a':p.color);
+      if(mm.material.emissive)mm.material.emissiveIntensity=dim?0:(selId===p.id?1.6:.7);
     });
   });
 }
 
-// ── VIEW MODE ─────────────────────────────────────────────────────────────
+// ── View mode ────────────────────────────────────────────────────────────────
 document.querySelectorAll('.vbtn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    viewMode=btn.dataset.mode;
+    mode=btn.dataset.mode;
     document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    renderer.clippingPlanes = viewMode==='cross'?[clipPlane]:[];
+    renderer.clippingPlanes=mode==='cross'?[clip]:[];
   });
 });
 
-// ── EXPLODE ───────────────────────────────────────────────────────────────
+// ── Explode ───────────────────────────────────────────────────────────────────
 const EX=1.5;
-function tickExplode(){
-  const t = viewMode==='exploded'?1:0;
+function tickEx(){
+  const t=mode==='exploded'?1:0;
   PARTS.forEach(p=>{
-    const e=registry[p.id]; if(!e) return;
-    const v=e.exVec;
-    e.group.position.x+=(v.x*EX*t-e.group.position.x)*0.09;
-    e.group.position.y+=(v.y*EX*t-e.group.position.y)*0.09;
-    e.group.position.z+=(v.z*EX*t-e.group.position.z)*0.09;
+    const e=reg[p.id];if(!e)return;
+    const v=e.ev;
+    e.g.position.x+=(v.x*EX*t-e.g.position.x)*.09;
+    e.g.position.y+=(v.y*EX*t-e.g.position.y)*.09;
+    e.g.position.z+=(v.z*EX*t-e.g.position.z)*.09;
   });
 }
 
-// ── RESIZE ────────────────────────────────────────────────────────────────
+// ── Resize ───────────────────────────────────────────────────────────────────
 function resize(){
   const w=wrap.clientWidth,h=wrap.clientHeight;
-  renderer.setSize(w,h,false);
-  camera.aspect=w/h; camera.updateProjectionMatrix();
+  renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
 }
-resize();
-window.addEventListener('resize',resize);
+resize();window.addEventListener('resize',resize);
 
-// ── LOOP ──────────────────────────────────────────────────────────────────
-const clock = new THREE.Clock();
-(function animate(){
-  requestAnimationFrame(animate);
-  const dt=clock.getDelta(), t=clock.getElapsedTime();
-  controls.update();
-  impSpin.rotation.z  += dt*(selectedId==='impeller'?16:7);
-  chopSpin.rotation.z += dt*2.5;
-  screenMat.emissiveIntensity = .45+Math.sin(t*1.8)*.22;
-  tickExplode();
+// ── Loop ─────────────────────────────────────────────────────────────────────
+const clk=new THREE.Clock();
+(function loop(){
+  requestAnimationFrame(loop);
+  const dt=clk.getDelta(),t=clk.getElapsedTime();
+  ctrl.update();
+  impSpin.rotation.z+=dt*(selId==='impeller'?16:7);
+  chopSpin.rotation.z+=dt*2.5;
+  scrMat.emissiveIntensity=.45+Math.sin(t*1.8)*.22;
+  tickEx();
   renderer.render(scene,camera);
 })();
 </script>
