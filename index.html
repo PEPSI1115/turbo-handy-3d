@@ -122,10 +122,10 @@ renderer.localClippingEnabled=true;
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(42,1,.1,100);
-camera.position.set(1.9,1.1,3.6);
+camera.position.set(1.8,0.5,4.0);
 
 const ctrl=new OrbitControls(camera,renderer.domElement);
-ctrl.target.set(0,-.3,0);ctrl.enableDamping=true;ctrl.dampingFactor=.08;
+ctrl.target.set(0,-.7,0);ctrl.enableDamping=true;ctrl.dampingFactor=.08;
 ctrl.minDistance=2;ctrl.maxDistance=10;ctrl.update();
 
 // Lights — brighter to make housing pop against background
@@ -216,32 +216,39 @@ function m(hex,o={}){
     bolt.rotation.x=Math.PI/2;bolt.position.set(Math.cos(a)*.68,Math.sin(a)*.68,.265);g.add(bolt);
   }
 
-  // ── GRIP — shorter, thinner, proportional to turbo head ──
-  // Turbo head radius ~0.76; grip should feel like 1/3 of that
+  // ── 커넥터 브래킷 — 하우징 하단(y=-0.76)과 그립을 실제로 연결 ──
+  // 하우징 반경 0.76이므로 하단은 y=-0.76. 커넥터가 여기서 시작해야 함.
+  const conn=new THREE.Mesh(
+    new THREE.BoxGeometry(.48,.46,.42),   // height 0.46 → y spans ±0.23
+    m('#2a4255',{m:.58,r:.36})
+  );
+  conn.position.set(-.02,-.88,0);         // center y=-0.88 → spans [-0.65, -1.11]
+  // -0.76 (housing bottom) is inside [-0.65,-1.11] → seamless merge ✓
+  g.add(conn);
+
+  // ── GRIP — 아래로 내려서 커넥터 하단(y=-1.11)과 이어붙임 ──
   const grip=new THREE.Mesh(
-    new THREE.CylinderGeometry(.20,.165,.88,26),
+    new THREE.CylinderGeometry(.205,.168,1.10,26),
     m('#1a2530',{m:.35,r:.75})
   );
-  grip.position.set(-.04,-.80,-.02);grip.rotation.z=.1;
+  grip.position.set(-.04,-1.62,-.02);   // center y=-1.62 → spans [-1.07,-2.17]
+  // top y=-1.07 overlaps connector bottom y=-1.11 ✓
+  grip.rotation.z=.1;
   g.add(grip);
 
-  // Grip ridges (3 subtle ones)
-  for(let i=0;i<3;i++){
-    const ridge=new THREE.Mesh(new THREE.TorusGeometry(.185,.012,6,22),m('#101c28',{m:.3,r:.8}));
-    ridge.position.set(-.04,-.65+(i-.5)*.18,-.02);ridge.rotation.z=.1;g.add(ridge);
+  // Grip ridges
+  for(let i=0;i<4;i++){
+    const ridge=new THREE.Mesh(new THREE.TorusGeometry(.192,.011,6,22),m('#101c28',{m:.3,r:.8}));
+    ridge.position.set(-.04,-1.28+(i*.22),-.02);ridge.rotation.z=.1;g.add(ridge);
   }
-
-  // Grip-housing connector (shorter bracket)
-  const conn=new THREE.Mesh(new THREE.BoxGeometry(.50,.30,.42),m('#2a4255',{m:.58,r:.36}));
-  conn.position.set(-.02,-.34,0);g.add(conn);
 
   // Anti-lag button (amber, on housing side)
   const al=new THREE.Mesh(new THREE.CylinderGeometry(.052,.052,.09,12),m('#f59e0b',{m:.5,r:.3}));
   al.position.set(.42,.06,.4);g.add(al);
 
-  // Lock button (on connector top, front)
+  // Lock button (커넥터 전면, OLED 옆)
   const lk=new THREE.Mesh(new THREE.CylinderGeometry(.04,.04,.09,12),m('#64748b',{m:.5,r:.4}));
-  lk.rotation.x=Math.PI/2;lk.position.set(-.02,-.2,.24);g.add(lk);
+  lk.rotation.x=Math.PI/2;lk.position.set(.16,-.82,.24);g.add(lk);
 
   scene.add(g);
 }
@@ -324,48 +331,46 @@ let chopSpin;
   add('helmholtz',g,[box,neck],new THREE.Vector3(1.7,.2,0));
 }
 
-// ── OLED — 손잡이 전면(바람 방향, +Z 쪽) ────────────────────────────────────
+// ── OLED — 커넥터 전면(+Z, 바람 방향) ───────────────────────────────────────
 let scrMat;
 {
   const g=new THREE.Group();
-  const bezel=new THREE.Mesh(new THREE.BoxGeometry(.28,.13,.022),m('#050d1a',{m:.56,r:.28}));
-  bezel.position.set(-.02,-.28,.238);g.add(bezel); // 커넥터 전면
-  scrMat=new THREE.MeshStandardMaterial({color:new THREE.Color('#38bdf8'),emissive:new THREE.Color('#38bdf8'),emissiveIntensity:.7});
-  const scr=new THREE.Mesh(new THREE.BoxGeometry(.24,.10,.018),scrMat);
-  scr.position.set(-.02,-.28,.248);g.add(scr);
+  const bezel=new THREE.Mesh(new THREE.BoxGeometry(.28,.14,.022),m('#050d1a',{m:.56,r:.28}));
+  bezel.position.set(-.02,-.84,.235);g.add(bezel);
+  scrMat=new THREE.MeshStandardMaterial({color:new THREE.Color('#38bdf8'),emissive:new THREE.Color('#38bdf8'),emissiveIntensity:.75});
+  const scr=new THREE.Mesh(new THREE.BoxGeometry(.24,.11,.018),scrMat);
+  scr.position.set(-.02,-.84,.246);g.add(scr);
   add('oled',g,[bezel,scr],new THREE.Vector3(0,.3,1.6));
 }
 
-// ── TRIGGER — 손잡이 후면(디스플레이 반대편, -Z 쪽) ─────────────────────────
+// ── TRIGGER — 커넥터·그립 후면(-Z, 반대편) 총처럼 잡는 위치 ──────────────────
 {
   const g=new THREE.Group();
-  // 가드
-  const guard=new THREE.Mesh(new THREE.BoxGeometry(.22,.1,.04),m('#c026d3',{m:.4,r:.5}));
-  guard.position.set(-.02,-.42,-.22);g.add(guard);
-  // 트리거 레버
-  const trig=new THREE.Mesh(new THREE.BoxGeometry(.18,.38,.10),m('#e879f9',{m:.3,r:.6}));
-  trig.position.set(-.02,-.60,-.22);trig.rotation.x=-.32;g.add(trig);
+  const guard=new THREE.Mesh(new THREE.BoxGeometry(.24,.10,.04),m('#c026d3',{m:.4,r:.5}));
+  guard.position.set(-.02,-1.04,-.225);g.add(guard);
+  const trig=new THREE.Mesh(new THREE.BoxGeometry(.19,.42,.11),m('#e879f9',{m:.3,r:.6}));
+  trig.position.set(-.02,-1.28,-.22);trig.rotation.x=-.30;g.add(trig);
   add('trigger',g,[guard,trig],new THREE.Vector3(.2,-.3,-1.7));
 }
 
-// ── BATTERY — 손잡이 내부 하단 ───────────────────────────────────────────────
+// ── BATTERY — 그립 내부 하단 ─────────────────────────────────────────────────
 {
   const g=new THREE.Group();
-  const batt=new THREE.Mesh(new THREE.BoxGeometry(.26,.30,.22),m('#f87171'));
-  batt.position.set(-.04,-.80,0);g.add(batt);
+  const batt=new THREE.Mesh(new THREE.BoxGeometry(.26,.32,.22),m('#f87171'));
+  batt.position.set(-.04,-1.72,0);g.add(batt);
   const usb=new THREE.Mesh(new THREE.BoxGeometry(.04,.065,.12),m('#475569',{m:.8,r:.2}));
-  usb.position.set(-.04,-.97,0);g.add(usb);
-  add('battery',g,[batt],new THREE.Vector3(0,-1.7,0));
+  usb.position.set(-.04,-1.90,0);g.add(usb);
+  add('battery',g,[batt],new THREE.Vector3(0,-1.8,0));
 }
 
-// ── MCU + ESC — 손잡이 내부 상단 ─────────────────────────────────────────────
+// ── MCU + ESC — 그립 내부 상단 ───────────────────────────────────────────────
 {
   const g=new THREE.Group();
-  const pcb=new THREE.Mesh(new THREE.BoxGeometry(.24,.13,.20),m('#1a6b3c',{m:.2,r:.75}));
-  pcb.position.set(-.02,-.52,0);g.add(pcb);
+  const pcb=new THREE.Mesh(new THREE.BoxGeometry(.24,.14,.20),m('#1a6b3c',{m:.2,r:.75}));
+  pcb.position.set(-.02,-1.26,0);g.add(pcb);
   const chip=new THREE.Mesh(new THREE.BoxGeometry(.09,.04,.09),m('#fb923c',{m:.4,r:.5}));
-  chip.position.set(-.02,-.49,.06);g.add(chip);
-  add('mcu',g,[pcb,chip],new THREE.Vector3(.5,-1.1,.6));
+  chip.position.set(-.02,-1.23,.06);g.add(chip);
+  add('mcu',g,[pcb,chip],new THREE.Vector3(.5,-1.2,.6));
 }
 
 // ── Raycaster ────────────────────────────────────────────────────────────────
